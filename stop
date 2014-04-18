@@ -1,0 +1,8 @@
+#!/bin/sh
+pid=`cat deamon.pid`
+echo "********************************************"
+echo "***********  OVERCOME-NEWS-FEED  ***********"
+echo "***********      stopped $!      ***********"
+echo "********************************************"
+kill -9 `cat deamon.pid`
+rm deamon.pid

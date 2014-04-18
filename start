@@ -1,0 +1,9 @@
+#!/bin/sh
+pwd=`pwd`
+java -jar -DAPP_HOME="$pwd/" target/scala-2.10/overcome-news-feed-assembly-0.1.jar <&- &
+echo "********************************************"
+echo "***********  OVERCOME-NEWS-FEED  ***********"
+echo "***********      started $!      ***********"
+echo "********************************************"
+pid=$!
+echo ${pid} > deamon.pid
