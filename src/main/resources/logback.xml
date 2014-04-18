@@ -1,0 +1,40 @@
+<!--
+  ~ Copyright (c) 2013.
+  ~ All Right Reserved, http://www.maxiru.com/
+  -->
+
+<configuration>
+    <conversionRule conversionWord="levelcolor"
+               converterClass="com.dimeder.misc.LogbackColor" />
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${APP_HOME}logs/application.log</file>
+        <encoder>
+            <pattern>%date - [%level] - from %logger in %thread
+               %message%n%xException%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!--<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
+        <!--<encoder>-->
+            <!--&lt;!&ndash; <pattern>%coloredLevel %logger{15} - %message%n%xException{5} </pattern> &ndash;&gt;-->
+            <!--<pattern>[%4levelcolor] %d{HH:mm:ss.SSS} %msg%n</pattern>-->
+        <!--</encoder>-->
+    <!--</appender>-->
+
+    <!--<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
+        <!--<encoder>-->
+            <!--&lt;!&ndash; <pattern>%coloredLevel %logger{15} - %message%n%xException{5} </pattern> &ndash;&gt;-->
+            <!--<pattern>[%4levelcolor] %msg%n</pattern>-->
+        <!--</encoder>-->
+    <!--</appender>-->
+
+
+    <logger name="com.dimeder" level="DEBUG"/>
+    <root level="DEBUG">
+        <appender-ref ref="FILE"/>
+    </root>
+
+
+</configuration>

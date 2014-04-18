@@ -2,7 +2,7 @@ package com.dimeder.streams
 
 import twitter4j._
 import rx.lang.scala.{Observable, Subject}
-
+import com.dimeder.log
 
 /**
  * Created: Miguel A. Iglesias
@@ -78,7 +78,9 @@ object TwitterStreamer {
     def onUnfavorite(source: User, target: User, unfavoritedStatus: Status): Unit = {}
 
     def onStatus(status: Status): Unit = {
-      tweetsStream.onNext(Tweet(status.getUser.getId, status.getText))
+      val tweet = Tweet(status.getUser.getId, status.getText)
+      log.debug(s"receiving $tweet")
+      tweetsStream.onNext(tweet)
     }
 
     def onUserListDeletion(listOwner: User, list: UserList): Unit = {}
