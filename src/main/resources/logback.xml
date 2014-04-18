@@ -4,8 +4,8 @@
   -->
 
 <configuration>
-    <conversionRule conversionWord="levelcolor"
-               converterClass="com.dimeder.misc.LogbackColor" />
+    <!--<conversionRule conversionWord="levelcolor"-->
+               <!--converterClass="com.dimeder.misc.LogbackColor" />-->
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>${APP_HOME}logs/application.log</file>

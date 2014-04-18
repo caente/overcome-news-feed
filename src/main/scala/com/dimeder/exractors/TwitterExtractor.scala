@@ -3,7 +3,7 @@ package com.dimeder.exractors
 import scala.io.Source
 import com.dimeder.streams.TwitterStreamer.Tweet
 import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
+import com.dimeder.log
 
 /**
  * Created: Miguel A. Iglesias
@@ -38,12 +38,13 @@ object TwitterExtractor {
 
   val linkPattern = linkRegex.r
 
-  def extractWords(tweet: Tweet): Sample = {
+  def extractWords(tweet: Tweet): Future[Sample] = Future {
     def tag(word: String, count: Int): Word = word match {
       case w if w.startsWith("#") => new Word(tweet.origin, word, count) with HashTag
       case w if w.startsWith("@") => new Word(tweet.origin, word, count) with TwitterUser
       case _ => Word(tweet.origin, word, count)
     }
+    log.debug(s"extracting $tweet")
     val links = linkPattern.findAllIn(tweet.text).toList.groupBy(l => l).map {
       case (l, ls) => new Word(tweet.origin, l, ls.size) with Link
     }.toSet
