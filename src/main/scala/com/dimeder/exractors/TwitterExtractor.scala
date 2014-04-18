@@ -4,7 +4,7 @@ import scala.io.Source
 import com.dimeder.streams.TwitterStreamer.Tweet
 import scala.concurrent.Future
 import com.dimeder.log
-
+import scala.concurrent.ExecutionContext.Implicits.global
 /**
  * Created: Miguel A. Iglesias
  * Date: 4/18/14
