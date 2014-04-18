@@ -44,8 +44,6 @@ object TwitterExtractor {
       case w if w.startsWith("@") => new Word(tweet.origin, word, count) with TwitterUser
       case _ => Word(tweet.origin, word, count)
     }
-    println(s"extracting $tweet")
-
     val links = linkPattern.findAllIn(tweet.text).toList.groupBy(l => l).map {
       case (l, ls) => new Word(tweet.origin, l, ls.size) with Link
     }.toSet
