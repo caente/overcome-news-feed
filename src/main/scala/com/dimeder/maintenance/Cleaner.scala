@@ -3,7 +3,7 @@ package com.dimeder.maintenance
 import akka.actor.Actor
 import scala.concurrent.duration._
 import com.typesafe.config.ConfigFactory
-import com.dimeder.models.WordsModel
+import com.dimeder.models.{WordsModel, WordsCleaner}
 import akka.pattern.pipe
 import com.dimeder.models.WordsModel.Delete
 import akka.event.LoggingReceive
@@ -24,7 +24,7 @@ object Cleaner {
 
 }
 
-class Cleaner extends Actor {
+class Cleaner(wordsCleaner:WordsCleaner) extends Actor {
 
   import context.dispatcher
 
@@ -37,13 +37,13 @@ class Cleaner extends Actor {
   }
 
   def receive = LoggingReceive {
-    case Cleaner.Clean => WordsModel.getSources.subscribe(source => self ! Cleaner.Source(source))
+    case Cleaner.Clean => wordsCleaner.getSources.subscribe(source => self ! Cleaner.Source(source))
     case Cleaner.Source(source) =>
-      WordsModel.countWordsBySource(source).map(count => Cleaner.Count(source, count)) pipeTo self
+      wordsCleaner.countWordsBySource(source).map(count => Cleaner.Count(source, count)) pipeTo self
     case Cleaner.Count(source, count) =>
       log.debug(s"total count: $count")
       if (count > min_length)
-        WordsModel.removeOldestWords(Delete(source, count - min_length))
+        wordsCleaner.removeOldestWords(Delete(source, count - min_length))
   }
 
 }

@@ -9,12 +9,22 @@ import com.dimeder.streams.TwitterStreamer.Tweet
 import com.dimeder.exractors.TwitterExtractor.{Sample, Item}
 import rx.lang.scala.Observable
 import com.dimeder.log
+import com.dimeder.models.WordsModel.Delete
 
 /**
  * Created: Miguel A. Iglesias
  * Date: 1/25/14
  */
-object WordsModel {
+
+trait WordsCleaner {
+  def getSources: Observable[Long]
+
+  def countWordsBySource(source: Long): Future[Int]
+
+  def removeOldestWords(delete: Delete):Future[Unit]
+}
+
+object WordsModel extends WordsCleaner {
 
   case class Delete(source: Long, document_count: Int)
 
