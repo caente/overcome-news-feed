@@ -22,7 +22,7 @@ object Main extends App {
     twitterCredentials =>
       TwitterStreamer(twitterCredentials).subscribe {
         tweet =>
-          TwitterExtractor.extractWords(tweet).map(WordsModel.upsertWord)
+          TwitterExtractor.extractWords(tweet).map(WordsModel.upsertSample)
       }
   }
 

@@ -20,7 +20,7 @@ object WordsModel {
 
   RegisterJodaTimeConversionHelpers()
 
-  def upsertWord(sample: Sample) = sample match {
+  def upsertSample(sample: Sample) = sample match {
     case Sample(tweet: Tweet, items: Set[Item]) =>
       val now = DateTime.now
       items.foreach {
