@@ -21,7 +21,7 @@ trait WordsCleaner {
 
   def countWordsBySource(source: Long): Future[Int]
 
-  def removeOldestWords(delete: Delete):Future[Unit]
+  def removeOldestWords(delete: Delete): Future[Unit]
 }
 
 object WordsModel extends WordsCleaner {
@@ -35,9 +35,9 @@ object WordsModel extends WordsCleaner {
       val now = DateTime.now
       items.foreach {
         item =>
-          val update = $set("text" -> tweet.text) ++ $push("history" -> now) ++ $inc("count" -> item.count)
+          val update = $set("text" -> tweet.text, "last_update" -> now) ++ $push("history" -> now) ++ $inc("count" -> item.count)
           db("words").update(
-            MongoDBObject("source" -> tweet.origin, "word" -> item.item, "last_update" -> now),
+            MongoDBObject("source" -> tweet.origin, "word" -> item.item),
             update,
             upsert = true
           )
@@ -52,7 +52,7 @@ object WordsModel extends WordsCleaner {
     log.debug(s"removing ${delete.document_count} items")
     delete match {
       case Delete(source: Long, extra: Int) =>
-        val wordsToRemove = db("words").find(MongoDBObject("source" -> source)).sort(MongoDBObject("history" -> -1)).limit(extra).map(_.getAs[ObjectId]("_id").get)
+        val wordsToRemove = db("words").find(MongoDBObject("source" -> source)).sort(MongoDBObject("last_update" -> -1)).limit(extra).map(_.getAs[ObjectId]("_id").get)
         db("words").remove("_id" $in wordsToRemove.toList)
     }
   }
