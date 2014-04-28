@@ -32,6 +32,7 @@ object WordsModel extends WordsCleaner {
 
   def upsertSample(sample: Sample) = sample match {
     case Sample(tweet: Tweet, items: Set[Item]) =>
+      log.debug(s"persisting $sample")
       val now = DateTime.now
       items.foreach {
         item =>
