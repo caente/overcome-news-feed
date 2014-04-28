@@ -36,7 +36,7 @@ object WordsModel extends WordsCleaner {
       val now = DateTime.now
       items.foreach {
         item =>
-          val update = $set("text" -> tweet.text, "last_update" -> now) ++ $push("history" -> now) ++ $inc("count" -> item.count)
+          val update = $set("text" -> tweet.text) ++ $set("last_update" -> now) ++ $push("history" -> now) ++ $inc("count" -> item.count)
           db("words").update(
             MongoDBObject("source" -> tweet.origin, "word" -> item.item),
             update,
